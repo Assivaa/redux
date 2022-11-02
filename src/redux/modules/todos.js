@@ -1,20 +1,98 @@
-const initialState = {
-   items: [],
+// Action value
+const ADD_TODO = "ADD_TODO";
+const GET_TODO_BY_ID = "GET_TODO_BY_ID";
+const DELETE_TODO = "DELETE_TODO";
+const TOGGLE_STATUS_TODO = "TOGGLE_STATUS_TODO";
+
+export const addTodo = (payload) => {
+  return {
+    type: ADD_TODO,
+    payload,
+  };
 };
 
-const ADD_ITEM = 'my-app/todos/ADD_ITEM';
+// action creator
+export const deleteTodo = (payload) => {
+  return {
+    type: DELETE_TODO,
+    payload,
+  };
+};
 
-export const addItem = toDo => ({ type: ADD_ITEM, payload: toDo});
+// Todo isDone
+export const toggleStatusTodo = (payload) => {
+  return {
+    type: TOGGLE_STATUS_TODO,
+    payload,
+  };
+};
 
-const reducer = (state=initialState, action) => {
-   switch (action.type) {
-       case ADD_ITEM:
-          return {
-            items: [...state.items, action.payload],
-          };
-       default:
-          return state;
-   }
-}
+//  action creator
+export const getTodoByID = (payload) => {
+  return {
+    type: GET_TODO_BY_ID,
+    payload,
+  };
+};
 
-export default reducer;
+// initial state
+const initialState = {
+  todos: [
+    {
+      id: "1",
+      title: "Ini Title",
+      body: "Ini context🥰",
+      isDone: false,
+    },
+  ],
+  todo: {
+    id: "0",
+    title: "",
+    body: "",
+    isDone: false,
+  },
+};
+
+const todos = (state = initialState, action) => {
+  switch (action.type) {
+    case ADD_TODO:
+      return {
+        ...state,
+        todos: [...state.todos, action.payload],
+      };
+
+    case DELETE_TODO:
+      return {
+        ...state,
+        todos: state.todos.filter((todo) => todo.id !== action.payload),
+      };
+
+    //untuk done
+    case TOGGLE_STATUS_TODO:
+      return {
+        ...state,
+        todos: state.todos.map((todo) => {
+          if (todo.id === action.payload) {
+            return {
+              ...todo,
+              isDone: !todo.isDone,
+            };
+          } else {
+            return todo;
+          }
+        }),
+      };
+
+    case GET_TODO_BY_ID:
+      return {
+        ...state,
+        todo: state.todos.find((todo) => {
+          return todo.id === action.payload;
+        }),
+      };
+    default:
+      return state;
+  }
+};
+
+export default todos;

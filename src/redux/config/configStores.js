@@ -1,9 +1,9 @@
 import { createStore } from "redux";
 import { combineReducers } from "redux";
-import toDosReducer from '../modules/todos';
+import todos from "../modules/todos.js";
 
 const rootReducer = combineReducers({
-   toDos: toDosReducer
+  todos,
 });
 const store = createStore(rootReducer);
 
